@@ -66,11 +66,40 @@ var CommentList = React.createClass({
     }
 });
 var CommentForm = React.createClass({
+    getInitialState: function() {
+        return {author: '', text: ''};
+    },
+    authorChange: function(element) {
+        this.setState({author: element.target.value});
+    },
+    textChange: function(element) {
+        this.setState({text: element.target.value});
+    },
+    formSubmit: function(element) {
+        element.preventDefault();
+        var author = this.state.author.trim();
+        var text = this.state.text.trim();
+        
+        if (!text || !author) {
+            return;
+        }
+        // TODO: send request to the server
+        this.setState({author: '', text: ''});
+    },
     render: function () {
         return (
-            <form className="commentForm">
-                <input type="text" placeholder="Your name" />
-                <input type="text" placeholder="Say something..." />
+            <form className="commentForm" onSubmit={this.formSubmit}>
+                <input
+                    type="text"
+                    placeholder="Your name"
+                    value={this.state.author}
+                    onChange={this.authorChange}
+                />
+                <input
+                    type="text"
+                    placeholder="Say something..."
+                    value={this.state.text}
+                    onChange={this.textChange}/>
                 <input type="submit" value="Post" />
             </form>
         );
